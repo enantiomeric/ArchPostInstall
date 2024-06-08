@@ -3,6 +3,9 @@
 
 
 
+############################################################################
+
+# Configure these Variables before Running the script
 USERNAME="aditya"
 HOSTNAME="victus"
 LOCALE="en_US.UTF-8"
@@ -10,20 +13,24 @@ TIMEZONE="Asia/Kolkata"
 EFI_PARTITION="/dev/nvme0n1p1"
 
 
+############################################################################
+
 
 
 
 
 
 echo "======================================="
-echo "Summary:"
+echo "SUMMARY:"
+echo ""
 echo "Username: $USERNAME"
 echo "Hostname: $HOSTNAME"
 echo "Locale: $LOCALE"
 echo "Timezone: $TIMEZONE"
+echo "EFI Partition: $EFI_PARTITION"
 echo "======================================="
 echo ""
-
+echo ""
 read -n 1 -s -r -p "Press any key to continue..."
 
 echo "======================================="
@@ -64,18 +71,10 @@ echo ""
 echo "======================================="
 echo "Creating New User..."
 echo "======================================="
-useradd -m -G wheel -s /bin/bash $USERNAME
+useradd -m -g users -G wheel,storage,power,video,audio -s /bin/bash $USERNAME
 passwd $USERNAME
 echo "User $USERNAME Created."
 echo ""
-
-echo "======================================="
-echo "Enabling sudo for Wheel Group..."
-echo "======================================="
-sed -i 's/^# %wheel ALL=(ALL) ALL$/%wheel ALL=(ALL) ALL/' /etc/sudoers
-echo "Sudo Enabled for Wheel Group."
-echo ""
-
 
 echo "======================================="
 echo "Installing GRUB"
@@ -99,5 +98,7 @@ echo
 
 
 echo "======================================="
-echo "Installation Complete. You can now reboot."
+echo "Installation Complete"
+echo "After Reboot Login as Root and Edit the sudoers file to enable superuser access for the group: wheel"
+echo "You may reboot now"
 echo "======================================="
